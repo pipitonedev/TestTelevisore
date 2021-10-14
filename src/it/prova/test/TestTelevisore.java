@@ -17,6 +17,9 @@ public class TestTelevisore {
 
 			System.out.println("In tabella ci sono " + televisoreService.listAll().size() + " elementi.");
 
+			testGet(televisoreService);
+			System.out.println("In tabella ci sono " + televisoreService.listAll().size() + " elementi.");
+
 			testInserimentoNuovoTelevisore(televisoreService);
 			System.out.println("In tabella ci sono " + televisoreService.listAll().size() + " elementi.");
 
@@ -25,7 +28,7 @@ public class TestTelevisore {
 
 			testFindByExample(televisoreService);
 			System.out.println("In tabella ci sono " + televisoreService.listAll().size() + " elementi.");
-//
+
 			testUpdateTelevisore(televisoreService);
 			System.out.println("In tabella ci sono " + televisoreService.listAll().size() + " elementi.");
 
@@ -43,6 +46,26 @@ public class TestTelevisore {
 
 		System.out.println("inserito nuovo record: " + newTelevisoreInstance);
 		System.out.println(".......TEST INSERT FINE.............");
+	}
+
+	public static void testGet(TelevisoreService televisoreService) throws Exception {
+		System.out.println(".......TEST GET INIZIO.............");
+
+		Televisore televisoreDaPrendere = new Televisore("Sony", "KD329s", new Date());
+		televisoreService.inserisciNuovo(televisoreDaPrendere);
+
+		List<Televisore> listaTelevisori = televisoreService.listAll();
+		Long idCercami = listaTelevisori.get(0).getId();
+
+		if (televisoreService.findById(idCercami) == null) {
+			throw new RuntimeException("testGetById fallito...");
+		}
+
+		for (Televisore item : listaTelevisori) {
+			televisoreService.rimuovi(item);
+		}
+		System.out.println(".......TEST GET FINE.............");
+
 	}
 
 	private static void testRimozioneTelevisore(TelevisoreService televisoreService) throws Exception {
